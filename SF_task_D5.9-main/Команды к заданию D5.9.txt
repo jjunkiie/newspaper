@@ -1,0 +1,56 @@
+1. python manage.py shell
+2. from django.contrib.auth.models import User
+	1). Создать двух пользователей (с помощью метода User.objects.create_user('username')).
+3. User.objects.create_user('Ivan') 
+4. User.objects.create_user('Mariya') 
+	2). Создать два объекта модели Author, связанные с пользователями.
+5. from News_Portal_app.models import *
+6. author1 = Author(auth_id=1) 
+7. author1.save()
+8. Author.objects.create(auth_id=2) 
+	3). Добавить 4 категории в модель Category.
+9. Category.objects.create(cat_name='SP')
+10. Category.objects.create(cat_name='PO') 
+11. Category.objects.create(cat_name='ED') 
+12. Category.objects.create(cat_name='SO') 
+	4). Добавить 2 статьи и 1 новость.
+13. Post.objects.create(author_id=1, _type='AR', heading='Как программисту снизить когнитивную нагрузку', text='Предотвращение когнитивной перегрузки программиста — это ключ к недопущению ошибок и ускорению разработки.....')
+14. Post.objects.create(author_id=2, _type='NE', heading='SEO Выводы из утечки кода поисковика Яндекс', text='Я был в восторге, когда узнал об утечке проприетарного исходного кода Яндекса......')  
+15. Post.objects.create(author_id=1, _type='AR', heading='Приведет ли автоматизация к экономическому кризису?', text='На мой взгляд, до тех пор, пока темпы автоматизации не будут расти быстрее, чем могут быть созданы новые рабочие места, не следует ожидать, что ИИ вызовет массовую безработицу.....')
+	5). Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
+16. p1 = Post.objects.get(pk=1)
+17. p1.categories.add(Category.objects.get(pk=3)) 
+18. p1.save()
+19. p1.categories.add(Category.objects.get(pk=4)) 
+20. p1.save()
+21. Post.objects.get(pk=2).categories.add(Category.objects.get(pk=1)) 
+22. Post.objects.get(pk=3).categories.add(Category.objects.get(pk=2)) 
+	6). Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий). 
+23. Comment.objects.create(user_id=1, post_com_id=1, com_text='Some comment 1') 
+24. Comment.objects.create(user_id=2, post_com_id=1, com_text='Some comment 2') 
+25. Comment.objects.create(user_id=2, post_com_id=2, com_text='Some comment 3') 
+26. Comment.objects.create(user_id=1, post_com_id=3, com_text='Some comment 4') 
+	7). Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+27. Post.objects.get(pk=1).like() 
+28. Post.objects.get(pk=2).dislike() 
+29. Comment.objects.get(pk=2).like()
+30. Comment.objects.get(pk=2).like()
+31. Comment.objects.get(pk=1).dislike() 
+32. Comment.objects.get(pk=3).like() 
+	8). Обновить рейтинги пользователей.
+33. Author.objects.get(id=1).update_rating() 
+34. Author.objects.get(id=2).update_rating() 
+	9). Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+35. Author.objects.all().order_by('-author_rate').first().auth.username 
+36. Author.objects.all().order_by('-author_rate').first().author_rate 
+	10). Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+37. post1 = Post.objects.all().order_by('-post_rating').first() 
+38. Post.objects.all().values('time_in', 'post_rating','heading').order_by('-post_rating').first()
+39. post1.preview()  
+40. post1.author.auth.username
+	11). Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+41. Comment.objects.filter(post_com_id=post1.id).values('com_datetime', 'com_rating', 'com_text', 'user__username') 
+
+
+
+
