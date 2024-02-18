@@ -1,7 +1,7 @@
 1. python manage.py shell
 2. from django.contrib.auth.models import User
 	1). Создать двух пользователей (с помощью метода User.objects.create_user('username')).
-3. User.objects.create_user('Ivan') 
+3. User.objects.create_user('Jack') 
 4. User.objects.create_user('Mariya') 
 	2). Создать два объекта модели Author, связанные с пользователями.
 5. from News_Portal_app.models import *
