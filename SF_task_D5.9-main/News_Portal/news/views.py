@@ -1,9 +1,15 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from .forms import PostForm
-from .models import Post
-from .filters import PostFilter
+from django.views.generic import (
+    ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView,
+)
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Post, Author, Category
+from .filters import PostFilter
+from .forms import PostForm
 
 from django.shortcuts import render
 
@@ -65,3 +71,22 @@ class PostDelete(DeleteView):
     model = Post
     template_name = 'new_delete.html'
     success_url = reverse_lazy('post_list')
+
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+
+    message = 'Вы успешно подписались на рассылку новых публикаций в категории: '
+    return render(request, 'account/subscribe.html', {'category': category, 'message': message})
+
+
+@login_required
+def unsubscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.remove(user)
+
+    message = 'Вы успешно отписаны от рассылки по категории: '
+    return render(request, 'account/unsubscribe.html', {'category': category, 'message': message})
