@@ -1,0 +1,2 @@
+EMAIL_FOR_SEND = 'asdkaneki200@gmail.com'
+EMAIL_FOR_SEND_PASS = '1122334455'
